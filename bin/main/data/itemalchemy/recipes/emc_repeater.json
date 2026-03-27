@@ -1,0 +1,23 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "#B#",
+    "BAB",
+    "#B#"
+  ],
+  "key": {
+    "#": {
+      "item": "minecraft:glowstone"
+    },
+    "A": {
+      "item": "minecraft:hopper"
+    },
+    "B": {
+      "item": "itemalchemy:aeternalis_fuel"
+    }
+  },
+  "result": {
+    "item": "itemalchemy:emc_repeater",
+    "count": 4
+  }
+}

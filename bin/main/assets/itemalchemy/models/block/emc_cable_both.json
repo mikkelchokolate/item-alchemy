@@ -1,0 +1,65 @@
+{
+	"credit": "Made with Blockbench",
+	"parent": "minecraft:block/block",
+	"textures": {
+		"0": "itemalchemy:block/emc_cable/top",
+		"1": "itemalchemy:block/emc_cable/left",
+		"2": "itemalchemy:block/emc_cable/right",
+		"4": "itemalchemy:block/emc_cable/bottom",
+		"particle": "itemalchemy:block/emc_cable/top"
+	},
+	"elements": [
+		{
+			"name": "top",
+			"from": [0, 10, 6],
+			"to": [16, 10, 10],
+			"faces": {
+				"north": {"uv": [0, 0, 16, 1], "texture": "#0"},
+				"east": {"uv": [0, 0, 4, 1], "texture": "#particle"},
+				"south": {"uv": [0, 0, 16, 1], "texture": "#particle"},
+				"west": {"uv": [0, 0, 4, 1], "texture": "#particle"},
+				"up": {"uv": [0, 6, 16, 10], "texture": "#0"},
+				"down": {"uv": [0, 6, 16, 10], "texture": "#0"}
+			}
+		},
+		{
+			"name": "bottom",
+			"from": [0, 6, 6],
+			"to": [16, 6, 10],
+			"faces": {
+				"north": {"uv": [0, 0, 16, 0], "texture": "#particle"},
+				"east": {"uv": [0, 0, 4, 0], "texture": "#particle"},
+				"south": {"uv": [0, 0, 16, 0], "texture": "#particle"},
+				"west": {"uv": [0, 0, 4, 0], "texture": "#particle"},
+				"up": {"uv": [0, 6, 16, 10], "texture": "#4"},
+				"down": {"uv": [0, 6, 16, 10], "texture": "#4"}
+			}
+		},
+		{
+			"name": "right",
+			"from": [0, 6, 10],
+			"to": [16, 10, 10],
+			"faces": {
+				"north": {"uv": [0, 6, 16, 10], "texture": "#2"},
+				"east": {"uv": [0, 0, 0, 4], "texture": "#particle"},
+				"south": {"uv": [0, 6, 16, 10], "texture": "#2"},
+				"west": {"uv": [0, 0, 0, 4], "texture": "#particle"},
+				"up": {"uv": [0, 0, 16, 0], "texture": "#particle"},
+				"down": {"uv": [0, 0, 16, 0], "texture": "#particle"}
+			}
+		},
+		{
+			"name": "left",
+			"from": [0, 6, 6],
+			"to": [16, 10, 6],
+			"faces": {
+				"north": {"uv": [0, 6, 16, 10], "texture": "#1"},
+				"east": {"uv": [0, 0, 0, 4], "texture": "#particle"},
+				"south": {"uv": [0, 6, 16, 10], "texture": "#1"},
+				"west": {"uv": [0, 0, 0, 4], "texture": "#particle"},
+				"up": {"uv": [0, 0, 16, 0], "texture": "#particle"},
+				"down": {"uv": [0, 0, 16, 0], "texture": "#particle"}
+			}
+		}
+	]
+}

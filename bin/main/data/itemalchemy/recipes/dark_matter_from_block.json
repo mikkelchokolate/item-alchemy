@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "itemalchemy:dark_matter_block"
+    }
+  ],
+  "result": {
+    "item": "itemalchemy:dark_matter",
+    "count": 4
+  }
+}

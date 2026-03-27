@@ -1,0 +1,6 @@
+{
+  "variants": {
+    "connected=true": { "model": "itemalchemy:block/connected_ultimate_aegu" },
+    "connected=false": { "model": "itemalchemy:block/ultimate_aegu" }
+  }
+}

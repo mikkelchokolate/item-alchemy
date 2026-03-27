@@ -1,0 +1,25 @@
+{
+  "replace": false,
+  "values": [
+    "itemalchemy:alchemy_table",
+    "itemalchemy:emc_collector_mk1",
+    "itemalchemy:emc_collector_mk2",
+    "itemalchemy:emc_collector_mk3",
+    "itemalchemy:emc_collector_mk4",
+    "itemalchemy:emc_collector_mk5",
+    "itemalchemy:alchemy_chest",
+    "itemalchemy:emc_condenser",
+    "itemalchemy:emc_condenser_mk2",
+    "itemalchemy:emc_repeater",
+    "itemalchemy:emc_importer",
+    "itemalchemy:emc_exporter",
+    "itemalchemy:emc_cable",
+    "itemalchemy:emc_battery",
+    "itemalchemy:aegu",
+    "itemalchemy:advanced_aegu",
+    "itemalchemy:ultimate_aegu",
+    "itemalchemy:dark_matter_block",
+    "itemalchemy:red_matter_block",
+    "itemalchemy:dm_pedestal"
+  ]
+}
