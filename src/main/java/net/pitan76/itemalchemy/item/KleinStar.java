@@ -1,22 +1,31 @@
 package net.pitan76.itemalchemy.item;
 
+import net.minecraft.client.resource.language.I18n;
 import net.minecraft.item.ItemStack;
+import java.util.ArrayList;
+import java.util.List;
 import net.minecraft.nbt.NbtCompound;
 import net.pitan76.itemalchemy.ItemAlchemy;
+import net.pitan76.itemalchemy.util.TooltipUtil;
 import net.pitan76.mcpitanlib.api.event.item.ItemAppendTooltipEvent;
 import net.pitan76.mcpitanlib.api.event.item.ItemBarColorArgs;
 import net.pitan76.mcpitanlib.api.event.item.ItemBarStepArgs;
 import net.pitan76.mcpitanlib.api.event.item.ItemBarVisibleArgs;
+import net.pitan76.mcpitanlib.api.event.item.ItemUseEvent;
+import net.pitan76.mcpitanlib.api.item.ExtendItemProvider;
 import net.pitan76.mcpitanlib.api.item.v2.CompatItem;
 import net.pitan76.mcpitanlib.api.item.v2.CompatibleItemSettings;
+import net.pitan76.mcpitanlib.api.util.StackActionResult;
 import net.pitan76.mcpitanlib.api.util.CustomDataUtil;
 import net.pitan76.mcpitanlib.api.util.ItemStackUtil;
 import net.pitan76.mcpitanlib.api.util.NbtUtil;
 import net.pitan76.mcpitanlib.api.util.TextUtil;
+import net.pitan76.mcpitanlib.api.util.item.ItemUtil;
 
 public class KleinStar extends CompatItem {
 
     public static final String EMC_KEY = "stored_emc";
+    public static final String AUTO_CHARGE_KEY = "auto_charge_enabled";
 
     public enum Tier {
         EIN(50_000L),
@@ -97,12 +106,116 @@ public class KleinStar extends CompatItem {
         return toExtract;
     }
 
+    /**
+     * Get whether auto-charge is enabled for this Klein Star
+     */
+    public static boolean isAutoChargeEnabled(ItemStack stack) {
+        NbtCompound nbt = CustomDataUtil.get(stack, ItemAlchemy.MOD_ID);
+        if (!NbtUtil.has(nbt, AUTO_CHARGE_KEY)) {
+            return true; // Default to enabled
+        }
+        return NbtUtil.getBoolean(nbt, AUTO_CHARGE_KEY);
+    }
+
+    /**
+     * Set whether auto-charge is enabled for this Klein Star
+     */
+    public static void setAutoChargeEnabled(ItemStack stack, boolean enabled) {
+        NbtCompound nbt = CustomDataUtil.get(stack, ItemAlchemy.MOD_ID);
+        NbtUtil.set(nbt, AUTO_CHARGE_KEY, enabled);
+        CustomDataUtil.set(stack, ItemAlchemy.MOD_ID, nbt);
+    }
+
+    /**
+     * Toggle auto-charge status for this Klein Star
+     */
+    public static boolean toggleAutoCharge(ItemStack stack) {
+        boolean current = isAutoChargeEnabled(stack);
+        setAutoChargeEnabled(stack, !current);
+        return !current;
+    }
+
     @Override
     public void appendTooltip(ItemAppendTooltipEvent e) {
-        super.appendTooltip(e);
-        long stored = getStoredEmc(e.getStack());
+        ItemStack stack = e.getStack();
+        String translationKey = ItemUtil.getTranslationKey(stack.getItem());
+        
+        if (TooltipUtil.hasShiftDown()) {
+            String shiftKey = translationKey + ".desc_shift";
+            if (I18n.hasTranslation(shiftKey)) {
+                String shiftText = I18n.translate(shiftKey);
+                List<String> lines = splitTooltipText(shiftText);
+                for (String line : lines) {
+                    e.addTooltip(TextUtil.literal(line));
+                }
+            }
+        } else {
+            // Show basic description with multi-line support (only when shift is NOT held)
+            String descKey = translationKey + ".desc";
+            if (I18n.hasTranslation(descKey)) {
+                String descText = I18n.translate(descKey);
+                List<String> descLines = splitTooltipText(descText);
+                for (String line : descLines) {
+                    e.addTooltip(TextUtil.literal(line));
+                }
+            }
+            e.addTooltip(TextUtil.withColor(TextUtil.translatable("text.itemalchemy.shift_info"), 0x555555));
+        }
+        
+        long stored = getStoredEmc(stack);
         long max = getMaxEmc();
         e.addTooltip(TextUtil.literal("EMC: " + formatNumber(stored) + " / " + formatNumber(max)));
+        
+        // Show auto-charge status
+        boolean autoCharge = isAutoChargeEnabled(stack);
+        String autoChargeStatus = autoCharge ? "§aON" : "§cOFF";
+        e.addTooltip(TextUtil.literal("Auto-charge: " + autoChargeStatus + " §7(Sneak+Right-Click to toggle)"));
+    }
+
+    @Override
+    public StackActionResult onRightClick(ItemUseEvent e) {
+        if (e.isClient()) return e.consume();
+        
+        ItemStack stack = e.getStack();
+        
+        if (e.isSneaking()) {
+            // Toggle auto-charge
+            boolean newState = toggleAutoCharge(stack);
+            String message = newState ? "§aAuto-charge enabled" : "§cAuto-charge disabled";
+            e.user.sendMessage(TextUtil.literal(message));
+            return e.success();
+        }
+        
+        return super.onRightClick(e);
+    }
+    
+    private List<String> splitTooltipText(String text) {
+        List<String> lines = new ArrayList<>();
+        if (text == null || text.isEmpty()) {
+            return lines;
+        }
+        
+        int start = 0;
+        int delimiterIndex;
+        boolean foundDelimiter = false;
+        
+        while ((delimiterIndex = text.indexOf("|||", start)) != -1) {
+            foundDelimiter = true;
+            String line = text.substring(start, delimiterIndex);
+            if (!line.trim().isEmpty()) {
+                lines.add(line);
+            }
+            start = delimiterIndex + 3;
+        }
+        
+        if (start < text.length()) {
+            String remaining = text.substring(start);
+            if (!remaining.trim().isEmpty()) {
+                lines.add(remaining);
+            }
+        }
+        
+        return lines;
     }
 
     @Override

@@ -3,12 +3,11 @@ package net.pitan76.itemalchemy.item;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.pitan76.mcpitanlib.api.event.item.InventoryTickEvent;
-import net.pitan76.mcpitanlib.api.item.v2.CompatItem;
 import net.pitan76.mcpitanlib.api.item.v2.CompatibleItemSettings;
 import net.pitan76.mcpitanlib.api.util.ItemStackUtil;
 import net.pitan76.mcpitanlib.api.util.WorldUtil;
 
-public class RepairTalisman extends CompatItem {
+public class RepairTalisman extends AlchemicalItem {
 
     private static final int REPAIR_INTERVAL = 20; // Every second (20 ticks)
 
